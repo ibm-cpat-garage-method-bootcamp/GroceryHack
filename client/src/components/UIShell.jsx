@@ -31,31 +31,31 @@ const Fade20 = () => (
   </svg>
 );
 
-class UIShell extends Component {
-  header = "Menu Header";
-  menuTitle = "Menu Title";
-  menuItems = ["Simple List", "Item Two", "Item Three"];
+const header = "Grocery Hack";
+const menuTitle = "Lists";
+const menuItems = ["Simple List", "Shopping List"];
 
+class UIShell extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      patternName: this.menuItems[0]
+      activeList: menuItems[0],
     };
   }
 
   onPatternSelection = label => {
-    this.setState({ patternName: label });
+    this.setState({ activeList: label });
   };
 
   renderSideNavItems = () => {
-    return this.menuItems.map(label => this.renderSideNavItem(label));
+    return menuItems.map(label => this.renderSideNavItem(label));
   };
 
   renderSideNavItem = label => {
     return (
       <SideNavMenuItem
         href="# "
-        isActive={label === this.state.patternName ? true : false}
+        isActive={label === this.state.activeList ? true : false}
         onClick={e => this.onPatternSelection(label)}
       >
         {label}
@@ -69,7 +69,7 @@ class UIShell extends Component {
         <Header aria-label="IBM Platform Name">
           <SkipToContent />
           <HeaderName href="#" prefix="IBM">
-            {this.header}
+            {header}
           </HeaderName>
         </Header>
         <SideNav aria-label="Side navigation">
@@ -77,14 +77,14 @@ class UIShell extends Component {
             <SideNavMenu
               defaultExpanded
               icon={<Fade20 />}
-              title={this.menuTitle}
+              title={menuTitle}
             >
               {this.renderSideNavItems()}
             </SideNavMenu>
           </SideNavItems>
         </SideNav>
         <Content id="main-content">
-          <UIShellBody patternName={this.state.patternName} />
+          <UIShellBody selectedList={this.state.activeList} />
         </Content>
       </div>
     );

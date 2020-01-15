@@ -5,18 +5,22 @@ import ShoppingList from "../components/ShoppingList/ShoppingList";
 import "../pattern-components/patterns.scss";
 
 class UIShellBody extends Component {
-  components = {
-    "Simple List": SimpleList,
-    "Basic Page": ShoppingList
-  };
-  defaultComponent = "Basic Page";
+  constructor(props) {
+    super(props);
+    this.state = {
+      components: {
+        "Simple List": SimpleList,
+        "Shopping List": ShoppingList
+      }
+    }
+  }
 
   render() {
-    let curScreen = this.defaultComponent;
-    const PatternName = this.components[curScreen];
+    const { selectedList } = this.props;
+    const ActiveList = this.state.components[selectedList];
     return (
       <div className="pattern-container">
-        <PatternName showDescription={true} />
+        <ActiveList showDescription={true} />
       </div>
     );
   }
