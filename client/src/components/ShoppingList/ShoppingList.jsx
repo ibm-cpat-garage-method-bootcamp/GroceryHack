@@ -55,8 +55,20 @@ class ShoppingList extends Component {
           approved: true,
           availableInStore: true
         },
-      ]
-    };
+      ],
+      value: 'new item',
+      sortedBy: "name"
+    }
+  }
+
+  componentDidMount = () => {
+    this.sortItems("name");
+  }
+
+  componentDidUpdate = (prevProps, prevState) => {
+    if (prevState.items.length !== this.state.items.length) {
+      this.sortItems(this.state.sortedBy);
+    }
   }
 
   onRowClick = id => {
@@ -64,11 +76,31 @@ class ShoppingList extends Component {
   };
 
   sortItems = (key) => {
-    this.setState({items: sortArrayofObjectsAsc(this.state.items, key)})
+    this.setState({
+      items: sortArrayofObjectsAsc(this.state.items, key),
+      sortedBy: key
+    })
   }
 
-  componentDidMount = () => {
-    this.sortItems("name");
+  handleChange = (event) => {
+    this.setState({value: event.target.value});
+  }
+
+  handleSubmit = (event) => {
+    event.preventDefault();
+    const newItem = {
+        "name": this.state.value,
+        "aisle": Math.floor(Math.random() * (12 - 1)) + 1,
+        "quantity": "17",
+        "needed": true,
+        "image": "",
+        "approved": true,
+        "availableInStore": true
+      }
+    this.setState({
+      items: [...this.state.items, newItem],
+      value: 'new item'
+    })
   }
 
   renderRow = (row, col, id) => {
@@ -80,7 +112,6 @@ class ShoppingList extends Component {
             value="row-0"
             title="row-0"
             name="row-0"
-            //defaultChecked={this.state.selectedRow === id}
             checked={this.state.selectedRow === id}
           />
           <StructuredListCell>
@@ -108,6 +139,13 @@ class ShoppingList extends Component {
           title="Shopping List"
           subtitle="Items to Get on Your Next Shopping Trip"
         />
+        <form onSubmit={this.handleSubmit}>
+          <label>
+          Name:
+            <input type="text" placeholder={this.state.value} onChange={this.handleChange} value={this.state.value === "new item" ? "" : this.state.value} />
+          </label>
+          <input type="submit" value="Submit" />
+        </form>
         <div className="bx--row">
           <div className="bx--col-xs-12">
             <StructuredListWrapper selection border>
