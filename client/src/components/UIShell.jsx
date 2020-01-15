@@ -33,7 +33,7 @@ const Fade20 = () => (
 
 const header = "Grocery Hack";
 const menuTitle = "Lists";
-const menuItems = ["Simple List", "Shopping List"];
+const menuItems = ["Pantry List", "Shopping List"];
 
 class UIShell extends Component {
   constructor(props) {
