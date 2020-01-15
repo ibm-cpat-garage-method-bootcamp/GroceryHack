@@ -37,7 +37,7 @@
     "jest-pnp-resolver": "1.0.1",
     "jest-resolve": "23.6.0",
     "mini-css-extract-plugin": "0.4.3",
-    "node-sass": "^4.12.0",
+    "node-sass": "^4.13.0",
     "optimize-css-assets-webpack-plugin": "5.0.1",
     "pnp-webpack-plugin": "1.1.0",
     "postcss-flexbugs-fixes": "4.1.0",
@@ -122,6 +122,9 @@
   },
   "devDependencies": {
     "@types/jest": "^24.0.21",
-    "@types/react": "^16.9.11"
+    "@types/react": "^16.9.11",
+    "enzyme": "^3.11.0",
+    "enzyme-adapter-react-16": "^1.15.2",
+    "react-test-renderer": "^16.12.0"
   }
 }
