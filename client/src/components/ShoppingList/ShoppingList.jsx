@@ -22,7 +22,7 @@ class ShoppingList extends Component {
         {
           name: "Eggs",
           aisle: Math.floor(Math.random() * (12 - 1)) + 1,
-          quantity: 1,
+          quantity: "1",
           needed: true,
           image: undefined,
           approved: true,
@@ -31,7 +31,16 @@ class ShoppingList extends Component {
         {
           name: "Milk",
           aisle: Math.floor(Math.random() * (12 - 1)) + 1,
-          quantity: 1,
+          quantity: "1",
+          needed: true,
+          image: undefined,
+          approved: true,
+          availableInStore: true
+        },
+        {
+          name: "Zebra Cakes",
+          aisle: Math.floor(Math.random() * (12 - 1)) + 1,
+          quantity: "1",
           needed: true,
           image: undefined,
           approved: true,
@@ -40,7 +49,7 @@ class ShoppingList extends Component {
         {
           name: "Honey",
           aisle: Math.floor(Math.random() * (12 - 1)) + 1,
-          quantity: 1,
+          quantity: "1",
           needed: true,
           image: undefined,
           approved: true,
@@ -54,8 +63,20 @@ class ShoppingList extends Component {
     this.setState({ selectedRow: id });
   };
 
-  onAisleSortClick = () => {
-    this.setState({items: sortArrayofObjectsAsc(this.state.items, "aisle")});
+  sortItems = (key) => {
+    this.setState({items: sortArrayofObjectsAsc(this.state.items, key)})
+  }
+
+  // onAisleSortClick = () => {
+  //   this.setState({items: sortArrayofObjectsAsc(this.state.items, "aisle")});
+  // }
+
+  // onNameSortClick = () => {
+  //   this.setState({items: sortArrayofObjectsAsc(this.state.items, "name")});
+  // }
+
+  componentDidMount = () => {
+    this.sortItems("name");
   }
 
   renderRow = (row, col, id) => {
@@ -101,10 +122,10 @@ class ShoppingList extends Component {
               <StructuredListHead>
                 <StructuredListRow head>
                   <StructuredListCell head />
-                  <StructuredListCell head>
+                  <StructuredListCell head onClick={() => {this.sortItems("name")}} style={{cursor: "pointer"}}>
                     Items
                   </StructuredListCell>
-                  <StructuredListCell head onClick={this.onAisleSortClick} style={{cursor: "pointer"}}>
+                  <StructuredListCell head onClick={() => {this.sortItems("aisle")}} style={{cursor: "pointer"}}>
                     Aisle
                   </StructuredListCell>
                 </StructuredListRow>
