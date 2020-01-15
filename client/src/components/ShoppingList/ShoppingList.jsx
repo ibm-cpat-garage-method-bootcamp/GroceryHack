@@ -52,12 +52,12 @@ class ShoppingList extends Component {
   };
 
   render() {
-    const data = ["row1", "row2", "row3"];
+    const data = ["Eggs", "Milk", "Honey"];
     return (
       <div className="bx--grid pattern-container">
         <Header
-          title="Simple List"
-          subtitle="This pattern will display an array of model objects in a simple list column list."
+          title="Shopping List"
+          subtitle="Items to Get on Your Next Shopping Trip"
         />
         <div className="bx--row">
           <div className="bx--col-xs-12">
