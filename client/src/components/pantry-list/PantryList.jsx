@@ -17,7 +17,35 @@ class PantryList extends Component {
     super(props);
     this.state = {
       selectedRow: 0,
-      listItems: ["bananas", "other bananas", "moar bananas"],
+      listItems: [
+        {
+          "name": "bananas",
+          "aisle": 1,
+          "quantity": 1,
+          "needed": true,
+          "image": "",
+          "approved": true,
+          "availableInStore": true
+        },
+        {
+          "name": "oranges",
+          "aisle": 1,
+          "quantity": 1,
+          "needed": true,
+          "image": "",
+          "approved": true,
+          "availableInStore": true
+        },
+        {
+          "name": "kiwis",
+          "aisle": 1,
+          "quantity": 1,
+          "needed": true,
+          "image": "",
+          "approved": true,
+          "availableInStore": true
+        }
+      ],
       value: 'new item'
     };
     this.handleChange = this.handleChange.bind(this);
@@ -25,7 +53,13 @@ class PantryList extends Component {
   }
 
   onRowClick = id => {
+    console.log(id);
+    let currentItem = this.state.listItems[id];
+    currentItem.needed = !currentItem.needed;
+    let updatedList = this.state.listItems.splice(id, 1).push(currentItem);
+
     this.setState({ selectedRow: id });
+    this.setState()
   };
 
   handleChange(event) {
@@ -36,7 +70,17 @@ class PantryList extends Component {
     event.preventDefault();
     console.log(event.target)
     let currentState = this.state.listItems;
-    currentState.push(this.state.value);
+    currentState.push(
+      {
+        "name": this.state.value,
+        "aisle": 1,
+        "quantity": 1,
+        "needed": true,
+        "image": "",
+        "approved": true,
+        "availableInStore": true
+      }
+    );
     this.setState({
       listItems: currentState
     })
@@ -46,14 +90,14 @@ class PantryList extends Component {
     return (
       <StructuredListRow key={id} onClick={() => this.onRowClick(id)}>
         <div>
-          <StructuredListInput
+          {/* <StructuredListInput
             id={`row-${id}`}
             value="row-0"
             title="row-0"
             name="row-0"
-            //defaultChecked={this.state.selectedRow === id}
+            defaultChecked={this.state.selectedRow === id}
             checked={this.state.selectedRow === id}
-          />
+          /> */}
           <StructuredListCell>
             <Icon
               className="bx--structured-list-svg"
@@ -79,7 +123,7 @@ class PantryList extends Component {
         <form onSubmit={this.handleSubmit}>
           <label>
           Name:
-            <input type="text" value={this.state.value} onChange={this.handleChange} />
+            <input type="text" placeholder={this.state.value} onChange={this.handleChange} />
           </label>
           <input type="submit" value="Submit" />
         </form>
@@ -88,17 +132,27 @@ class PantryList extends Component {
             <StructuredListWrapper selection border>
               <StructuredListHead>
                 <StructuredListRow head>
-                  <StructuredListCell head />
+                  <StructuredListCell head>
+                    Needed
+                  </StructuredListCell>
                   <StructuredListCell head>
                     Pantry List
                   </StructuredListCell>
                 </StructuredListRow>
               </StructuredListHead>
 
+
               <StructuredListBody>
+              <StructuredListCell body>
                 {this.state.listItems.map((row, i) => {
-                  return this.renderRow(row, i);
+                  return this.renderRow(row.needed ? 'X' : '', i);
                 })}
+              </StructuredListCell>
+              <StructuredListCell body>
+                {this.state.listItems.map((row, i) => {
+                  return this.renderRow(row.name, i);
+                })}
+              </StructuredListCell>
               </StructuredListBody>
             </StructuredListWrapper>
           </div>
