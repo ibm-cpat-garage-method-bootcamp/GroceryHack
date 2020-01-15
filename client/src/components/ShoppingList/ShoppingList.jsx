@@ -47,6 +47,9 @@ class ShoppingList extends Component {
         <StructuredListCell className="simple-list-row">
           {row}
         </StructuredListCell>
+        <StructuredListCell className="simple-list-row">
+          {Math.floor(Math.random() * (12 - 1)) + 1}
+        </StructuredListCell>
       </StructuredListRow>
     );
   };
@@ -66,11 +69,14 @@ class ShoppingList extends Component {
                 <StructuredListRow head>
                   <StructuredListCell head />
                   <StructuredListCell head>
-                    Shopping List
+                    Items
+                  </StructuredListCell>
+                  <StructuredListCell head>
+                    Aisle
                   </StructuredListCell>
                 </StructuredListRow>
               </StructuredListHead>
-
+        
               <StructuredListBody>
                 {data.map((row, i) => {
                   return this.renderRow(row, i);
