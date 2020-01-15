@@ -22,7 +22,27 @@ describe('SortArrayofObjectsAsc', () => {
       number: 1
     }
   ]
-  test('should sort tuple array in ascending order', () => {
+  test('should sort array of objects in ascending order by number', () => {
     expect(sortArrayofObjectsAsc(testArray, "number")[0].name).toEqual("c");
+  });
+});
+
+describe('SortArrayofObjectsAsc', () => {
+  const testArray = [
+    {
+      name: "a",
+      string: "Z"
+    },
+    {
+      name: "b",
+      string: "Y"
+    },
+    {
+      name: "c",
+      string: "A"
+    }
+  ]
+  test('should sort an array of objects in ascending order by string', () => {
+    expect(sortArrayofObjectsAsc(testArray, "string")[0].name).toEqual("c");
   });
 });
