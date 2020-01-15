@@ -23,7 +23,7 @@
   },
   "include": [
     "src/**/*",
-    "test/**/*"
+    "test/**/*", "client/src/tact-test/fahrenheit-to-celcius.spec.js"
   ],
   "exclude": [
     "node_modules"
