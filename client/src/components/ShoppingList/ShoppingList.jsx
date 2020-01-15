@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import {
+  Checkbox,
   StructuredListWrapper,
   StructuredListRow,
   StructuredListCell,
@@ -26,7 +27,8 @@ class ShoppingList extends Component {
           needed: true,
           image: undefined,
           approved: true,
-          availableInStore: true
+          availableInStore: true,
+          purchased: false
         },
         {
           name: "Milk",
@@ -35,7 +37,8 @@ class ShoppingList extends Component {
           needed: true,
           image: undefined,
           approved: true,
-          availableInStore: true
+          availableInStore: true,
+          purchased: false
         },
         {
           name: "Zebra Cakes",
@@ -44,7 +47,8 @@ class ShoppingList extends Component {
           needed: true,
           image: undefined,
           approved: true,
-          availableInStore: true
+          availableInStore: true,
+          purchased: false
         },
         {
           name: "Honey",
@@ -53,7 +57,8 @@ class ShoppingList extends Component {
           needed: true,
           image: undefined,
           approved: true,
-          availableInStore: true
+          availableInStore: true,
+          purchased: false
         },
       ],
       value: 'new item',
@@ -70,6 +75,8 @@ class ShoppingList extends Component {
       this.sortItems(this.state.sortedBy);
     }
   }
+
+  // TODO: change to purchase click??
 
   onRowClick = id => {
     this.setState({ selectedRow: id });
@@ -89,13 +96,14 @@ class ShoppingList extends Component {
   handleSubmit = (event) => {
     event.preventDefault();
     const newItem = {
-        "name": this.state.value,
-        "aisle": Math.floor(Math.random() * (12 - 1)) + 1,
-        "quantity": "17",
-        "needed": true,
-        "image": "",
-        "approved": true,
-        "availableInStore": true
+        name: this.state.value,
+        aisle: Math.floor(Math.random() * (12 - 1)) + 1,
+        quantity: "17",
+        needed: true,
+        image: "",
+        approved: true,
+        availableInStore: true,
+        purchased: false
       }
     this.setState({
       items: [...this.state.items, newItem],
@@ -115,10 +123,11 @@ class ShoppingList extends Component {
             checked={this.state.selectedRow === id}
           />
           <StructuredListCell>
-            <Icon
+            {/* <Icon
               className="bx--structured-list-svg"
               icon={iconCheckmarkSolid}
-            />
+            /> */}
+            <Checkbox checked={false} />
           </StructuredListCell>
         </div>
 
@@ -151,7 +160,9 @@ class ShoppingList extends Component {
             <StructuredListWrapper selection border>
               <StructuredListHead>
                 <StructuredListRow head>
-                  <StructuredListCell head />
+                  <StructuredListCell head>
+                    Purchased
+                  </StructuredListCell>
                   <StructuredListCell head onClick={() => {this.sortItems("name")}} style={{cursor: "pointer"}}>
                     Items
                   </StructuredListCell>
