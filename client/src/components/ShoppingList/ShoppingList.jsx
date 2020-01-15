@@ -67,14 +67,6 @@ class ShoppingList extends Component {
     this.setState({items: sortArrayofObjectsAsc(this.state.items, key)})
   }
 
-  // onAisleSortClick = () => {
-  //   this.setState({items: sortArrayofObjectsAsc(this.state.items, "aisle")});
-  // }
-
-  // onNameSortClick = () => {
-  //   this.setState({items: sortArrayofObjectsAsc(this.state.items, "name")});
-  // }
-
   componentDidMount = () => {
     this.sortItems("name");
   }
