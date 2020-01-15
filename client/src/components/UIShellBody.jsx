@@ -12,7 +12,7 @@ class UIShellBody extends Component {
     "Pantry List": PantryList,
     "Add Edit Form": AddEditForm
   };
-  defaultComponent = "Add Edit Form";
+  defaultComponent = "Pantry List";
 
   render() {
     let curScreen = this.defaultComponent;

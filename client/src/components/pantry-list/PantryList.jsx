@@ -17,13 +17,30 @@ class PantryList extends Component {
     super(props);
     this.state = {
       selectedRow: 0,
-      listItems: ["bananas", "other bananas", "moar bananas"]
+      listItems: ["bananas", "other bananas", "moar bananas"],
+      value: 'new item'
     };
+    this.handleChange = this.handleChange.bind(this);
+    this.handleSubmit = this.handleSubmit.bind(this);
   }
 
   onRowClick = id => {
     this.setState({ selectedRow: id });
   };
+
+  handleChange(event) {
+    this.setState({value: event.target.value});
+  }
+
+  handleSubmit = (event) => {
+    event.preventDefault();
+    console.log(event.target)
+    let currentState = this.state.listItems;
+    currentState.push(this.state.value);
+    this.setState({
+      listItems: currentState
+    })
+  }
 
   renderRow = (row, id) => {
     return (
@@ -58,8 +75,14 @@ class PantryList extends Component {
       <div className="bx--grid pattern-container">
         <Header
           title="Pantry List"
-          subtitle="This pattern will display an array of model objects in a simple list column list."
         />
+        <form onSubmit={this.handleSubmit}>
+          <label>
+          Name:
+            <input type="text" value={this.state.value} onChange={this.handleChange} />
+          </label>
+          <input type="submit" value="Submit" />
+        </form>
         <div className="bx--row">
           <div className="bx--col-xs-12">
             <StructuredListWrapper selection border>
@@ -67,7 +90,7 @@ class PantryList extends Component {
                 <StructuredListRow head>
                   <StructuredListCell head />
                   <StructuredListCell head>
-                    Simple List Title
+                    Pantry List
                   </StructuredListCell>
                 </StructuredListRow>
               </StructuredListHead>
