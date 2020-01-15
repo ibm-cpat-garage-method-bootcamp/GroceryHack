@@ -46,7 +46,8 @@ class PantryList extends Component {
           "availableInStore": true
         }
       ],
-      value: 'new item'
+      value: 'new item',
+      showModal: false
     };
     this.handleChange = this.handleChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
@@ -113,8 +114,25 @@ class PantryList extends Component {
     );
   };
 
-  updateQuantity = (id, qCell) => {
+  // handleOpenQuantity () {
+  //   this.setState({showModal: true});
+  // }
 
+  // handleCloseModal () {
+  //   this.setState({showModal: false})
+  // }
+  updateQuantity = (id) => {
+    let quantity = prompt("Please enter the quantity:", "1");
+    if (quantity == null || quantity == "") {
+      let quantityInput = this.state.quantity; 
+    } else {
+      let quantityInput = quantity;
+    }
+
+    let currentList = this.state.listItems;
+    currentList[id].quantity = quantity;
+
+    this.setState({listItems: currentList});
   }
 
   render() {
@@ -169,7 +187,11 @@ class PantryList extends Component {
               </StructuredListCell>
               <StructuredListCell body>
                 {this.state.listItems.map((row, i) => {
-                  return this.renderRow(row.quantity, i);
+                  return (
+                    <div qCell={`quantity-${i}`} onClick={() => this.updateQuantity(i, `quantity-${i}`)}>
+                    {this.renderRow(row.quantity, i)}
+                    </div>
+                  )
                 })}
               </StructuredListCell>
               </StructuredListBody>
