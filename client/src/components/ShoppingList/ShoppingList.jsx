@@ -11,12 +11,42 @@ import {
 import { iconCheckmarkSolid } from "carbon-icons";
 import Header from "../../pattern-components/Header";
 import "../../pattern-components/patterns.scss"
+import { sortArrayofObjectsAsc } from "../../util/helpers";
 
 class ShoppingList extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      selectedRow: 0
+      selectedRow: 0,
+      items: [
+        {
+          name: "Eggs",
+          aisle: Math.floor(Math.random() * (12 - 1)) + 1,
+          quantity: 1,
+          needed: true,
+          image: undefined,
+          approved: true,
+          availableInStore: true
+        },
+        {
+          name: "Milk",
+          aisle: Math.floor(Math.random() * (12 - 1)) + 1,
+          quantity: 1,
+          needed: true,
+          image: undefined,
+          approved: true,
+          availableInStore: true
+        },
+        {
+          name: "Honey",
+          aisle: Math.floor(Math.random() * (12 - 1)) + 1,
+          quantity: 1,
+          needed: true,
+          image: undefined,
+          approved: true,
+          availableInStore: true
+        },
+      ]
     };
   }
 
@@ -24,7 +54,11 @@ class ShoppingList extends Component {
     this.setState({ selectedRow: id });
   };
 
-  renderRow = (row, id) => {
+  onAisleSortClick = () => {
+    this.setState({items: sortArrayofObjectsAsc(this.state.items, "aisle")});
+  }
+
+  renderRow = (row, col, id) => {
     return (
       <StructuredListRow key={id} onClick={() => this.onRowClick(id)}>
         <div>
@@ -47,12 +81,14 @@ class ShoppingList extends Component {
         <StructuredListCell className="simple-list-row">
           {row}
         </StructuredListCell>
+        <StructuredListCell className="simple-list-row">
+          {col}
+        </StructuredListCell>
       </StructuredListRow>
     );
   };
 
   render() {
-    const data = ["Eggs", "Milk", "Honey"];
     return (
       <div className="bx--grid pattern-container">
         <Header
@@ -66,14 +102,18 @@ class ShoppingList extends Component {
                 <StructuredListRow head>
                   <StructuredListCell head />
                   <StructuredListCell head>
-                    Shopping List
+                    Items
+                  </StructuredListCell>
+                  <StructuredListCell head onClick={this.onAisleSortClick} style={{cursor: "pointer"}}>
+                    Aisle
                   </StructuredListCell>
                 </StructuredListRow>
               </StructuredListHead>
-
+        
               <StructuredListBody>
-                {data.map((row, i) => {
-                  return this.renderRow(row, i);
+                {this.state.items.map((item, i) => {
+                  const {name, aisle} = item;
+                  return this.renderRow(name, aisle, i);
                 })}
               </StructuredListBody>
             </StructuredListWrapper>

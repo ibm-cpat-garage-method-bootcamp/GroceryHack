@@ -1,10 +1,7 @@
 import React, { Component } from "react";
-import SimpleList from "../pattern-components/SimpleList";
-import BasicPage from "../pattern-components/BasicPage";
 import ShoppingList from "../components/ShoppingList/ShoppingList";
 import "../pattern-components/patterns.scss";
 import PantryList from "./pantry-list/PantryList";
-import AddEditForm from "./edit-list/AddEditForm"
 
 class UIShellBody extends Component {
 
