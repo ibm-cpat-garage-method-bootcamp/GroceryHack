@@ -21,7 +21,7 @@ class PantryList extends Component {
         {
           "name": "bananas",
           "aisle": 1,
-          "quantity": "",
+          "quantity": "1",
           "needed": true,
           "image": "",
           "approved": true,
@@ -30,7 +30,7 @@ class PantryList extends Component {
         {
           "name": "oranges",
           "aisle": 1,
-          "quantity": "",
+          "quantity": "1",
           "needed": true,
           "image": "",
           "approved": true,
@@ -50,14 +50,17 @@ class PantryList extends Component {
     };
     this.handleChange = this.handleChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
+    this.onRowClick = this.onRowClick.bind(this);
   }
 
-  onRowClick = id => {
-    let updatedList = this.state.listItems;
-    updatedList[id].needed = !updatedList[id].needed;
-
-    this.setState({ selectedRow: id });
-    this.setState({listItems : updatedList})
+  onRowClick = (id, nCell) => {
+    if (nCell) {
+      let updatedList = this.state.listItems;
+      updatedList[id].needed = !updatedList[id].needed;
+  
+      this.setState({ selectedRow: id });
+      this.setState({listItems : updatedList})
+    }
   };
 
   handleChange(event) {
@@ -71,7 +74,7 @@ class PantryList extends Component {
       {
         "name": this.state.value,
         "aisle": 1,
-        "quantity": "17",
+        "quantity": "1",
         "needed": true,
         "image": "",
         "approved": true,
@@ -110,8 +113,11 @@ class PantryList extends Component {
     );
   };
 
+  updateQuantity = (id, qCell) => {
+
+  }
+
   render() {
-    const data = ["row1", "row2", "row3"];
     return (
       <div className="bx--grid pattern-container">
         <Header
@@ -136,7 +142,7 @@ class PantryList extends Component {
                     Pantry List
                   </StructuredListCell>
                   <StructuredListCell head>
-                    Quantity
+                    Quantity Needed
                   </StructuredListCell>
                 </StructuredListRow>
               </StructuredListHead>
@@ -145,12 +151,25 @@ class PantryList extends Component {
               <StructuredListBody>
               <StructuredListCell body>
                 {this.state.listItems.map((row, i) => {
-                  return this.renderRow(row.needed ? 'X' : ' ', i);
+                  return (
+                    <div nCell={`needed-${i}`} onClick={() => this.onRowClick(i, `needed-${i}`)}>
+                    {this.renderRow(row.needed ? "Yes" : "No", i)}
+                    </div> 
+                   )
+                  })}
+              </StructuredListCell>
+              <StructuredListCell body>
+                {this.state.listItems.map((row, i) => {
+                  return (
+                    <div className={`name-${i}`}>
+                    {this.renderRow(row.name, i)}
+                  </div> 
+                  )
                 })}
               </StructuredListCell>
               <StructuredListCell body>
                 {this.state.listItems.map((row, i) => {
-                  return this.renderRow(row.name, i);
+                  return this.renderRow(row.quantity, i);
                 })}
               </StructuredListCell>
               </StructuredListBody>
