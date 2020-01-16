@@ -7,9 +7,7 @@ import {
   StructuredListHead,
   StructuredListBody,
   StructuredListInput,
-  Icon
 } from "carbon-components-react";
-import { iconCheckmarkSolid } from "carbon-icons";
 import Header from "../../pattern-components/Header";
 import "../../pattern-components/patterns.scss"
 import { sortArrayofObjectsAsc } from "../../util/helpers";
@@ -78,22 +76,24 @@ class ShoppingList extends Component {
 
   // TODO: change to purchase click??
 
-  onRowClick = id => {
-    this.setState({ selectedRow: id });
+  onPurchaseClick = id => {
+    const itemsCopy = [...this.state.items];
+    itemsCopy[id].purchased = !itemsCopy[id].purchased;
+    this.setState({ items: itemsCopy });
   };
 
-  sortItems = (key) => {
+  sortItems = key => {
     this.setState({
       items: sortArrayofObjectsAsc(this.state.items, key),
       sortedBy: key
     })
   }
 
-  handleChange = (event) => {
+  handleChange = event => {
     this.setState({value: event.target.value});
   }
 
-  handleSubmit = (event) => {
+  handleSubmit = event => {
     event.preventDefault();
     const newItem = {
         name: this.state.value,
@@ -113,21 +113,16 @@ class ShoppingList extends Component {
 
   renderRow = (row, col, id) => {
     return (
-      <StructuredListRow key={id} onClick={() => this.onRowClick(id)}>
+      <StructuredListRow key={id} onClick={()=> {this.onPurchaseClick(id)}}>
         <div>
           <StructuredListInput
             id={`row-${id}`}
             value="row-0"
             title="row-0"
             name="row-0"
-            checked={this.state.selectedRow === id}
           />
           <StructuredListCell>
-            {/* <Icon
-              className="bx--structured-list-svg"
-              icon={iconCheckmarkSolid}
-            /> */}
-            <Checkbox checked={false} />
+            <Checkbox checked={this.state.items[id].purchased} />
           </StructuredListCell>
         </div>
 
