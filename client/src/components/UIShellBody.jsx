@@ -50,12 +50,34 @@ class UIShellBody extends Component {
           purchased: false
         },
       ],
-      // sortedBy: "name"
     }
   }
 
-  updateState = (newState) => {
+  setShellBodyState = (newState) => {
     this.setState(newState)
+  }
+
+  updateShoppingList = (item) => {
+    // TODO: add item.approved
+    if (item.needed === true) {
+      this.addItemToShoppingList(item)
+    } 
+    // else if (item.needed !== true || item.approved !== true) {
+    //   // TODO: pending list??
+    //   console.log("doesnt meet both criteria")
+    // } 
+    else {
+      this.removeItemFromShoppingList(item)
+    }
+  }
+
+  addItemToShoppingList = (newItem) => {
+    this.setState({shoppingList: [...this.state.shoppingList, newItem]})
+  }
+
+  removeItemFromShoppingList = (newItem) => {
+    const shoppingListCopy = this.state.shoppingList.filter((item) => item.name !== newItem.name)
+    this.setState({shoppingList: shoppingListCopy})
   }
 
   render() {
@@ -64,8 +86,8 @@ class UIShellBody extends Component {
       <div className="pattern-container">
         {
           selectedList === "Pantry List" ? 
-          <PantryList/> :
-          <ShoppingList updateState={this.updateState} shoppingList={this.state.shoppingList} />
+          <PantryList updateShoppingList={this.updateShoppingList}/> :
+          <ShoppingList setShellBodyState={this.setShellBodyState} shoppingList={this.state.shoppingList} />
         }
       </div>
     );

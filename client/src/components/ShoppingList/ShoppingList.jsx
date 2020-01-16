@@ -34,11 +34,11 @@ class ShoppingList extends Component {
   onPurchaseClick = id => {
     const itemsCopy = [...this.props.shoppingList];
     itemsCopy[id].purchased = !itemsCopy[id].purchased;
-    this.props.updateState({ shoppingList: itemsCopy });
+    this.props.setShellBodyState({ shoppingList: itemsCopy });
   };
 
   sortItems = key => {
-    this.props.updateState({
+    this.props.setShellBodyState({
       shoppingList: sortArrayofObjectsAsc(this.props.shoppingList, key)
     });
     this.setState({sortedBy: key});
@@ -60,7 +60,7 @@ class ShoppingList extends Component {
         availableInStore: true,
         purchased: false
       }
-    this.props.updateState({
+    this.props.setShellBodyState({
       shoppingList: [...this.props.shoppingList, newItem]
     });
 
