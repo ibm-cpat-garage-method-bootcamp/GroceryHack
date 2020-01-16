@@ -16,6 +16,7 @@ class PantryList extends Component {
     super(props);
     this.state = {
       selectedRow: 0,
+      userRole: false,
       listItems: [
         {
           "name": "flamin' hot cheetos",
@@ -87,6 +88,12 @@ class PantryList extends Component {
     );
     this.setState({
       listItems: currentState
+    })
+  }
+
+  componentDidMount = () => {
+    this.setState({
+      userRole: this.props.userRole
     })
   }
 
@@ -196,7 +203,6 @@ class PantryList extends Component {
               </StructuredListCell>
               </StructuredListBody>
             </StructuredListWrapper>
-            <propsOnlyTitle/>
           </div>
         </div>
       </div>
