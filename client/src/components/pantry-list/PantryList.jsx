@@ -49,26 +49,29 @@ class PantryList extends Component {
       value: 'new item',
       showModal: false
     };
-    this.handleChange = this.handleChange.bind(this);
-    this.handleSubmit = this.handleSubmit.bind(this);
-    this.onRowClick = this.onRowClick.bind(this);
+    this.handleItemInput = this.handleItemInput.bind(this);
+    this.handleItemSubmit = this.handleItemSubmit.bind(this);
+    this.toggleNeeded = this.toggleNeeded.bind(this);
   }
 
-  onRowClick = (id, nCell) => {
+  toggleNeeded = (id, nCell) => {
     if (nCell) {
       let updatedList = this.state.listItems;
       updatedList[id].needed = !updatedList[id].needed;
+      updatedList[id].needed ? updatedList[id].quantity = "1" : updatedList[id].quantity =  "0"
   
-      this.setState({ selectedRow: id });
-      this.setState({listItems : updatedList})
+      this.setState({
+        selectedRow: id,
+        listItems : updatedList
+      })
     }
   };
 
-  handleChange(event) {
+  handleItemInput(event) {
     this.setState({value: event.target.value});
   }
 
-  handleSubmit = (event) => {
+  handleItemSubmit = (event) => {
     event.preventDefault();
     let currentState = this.state.listItems;
     currentState.push(
@@ -89,7 +92,7 @@ class PantryList extends Component {
 
   renderRow = (row, id) => {
     return (
-      <StructuredListRow key={id} onClick={() => this.onRowClick(id)}>
+      <StructuredListRow key={id} onClick={() => this.toggleNeeded(id)}>
         {/* <div>
           <StructuredListInput
             id={`row-${id}`}
@@ -114,23 +117,15 @@ class PantryList extends Component {
     );
   };
 
-  // handleOpenQuantity () {
-  //   this.setState({showModal: true});
-  // }
-
-  // handleCloseModal () {
-  //   this.setState({showModal: false})
-  // }
   updateQuantity = (id) => {
     let quantity = prompt("Please enter the quantity:", "1");
-    if (quantity == null || quantity == "") {
-      let quantityInput = this.state.quantity; 
-    } else {
-      let quantityInput = quantity;
-    }
+    if (quantity === null || quantity === "") {
+      quantity = this.state.listItems[id].quantity; 
+    } 
 
     let currentList = this.state.listItems;
     currentList[id].quantity = quantity;
+    currentList[id].quantity === "0" ? currentList[id].needed = false : currentList[id].needed = true;
 
     this.setState({listItems: currentList});
   }
@@ -141,10 +136,10 @@ class PantryList extends Component {
         <Header
           title="Pantry List"
         />
-        <form onSubmit={this.handleSubmit}>
+        <form onSubmit={this.handleItemSubmit}>
           <label>
           Name:
-            <input type="text" placeholder={this.state.value} onChange={this.handleChange} />
+            <input type="text" placeholder={this.state.value} onChange={this.handleItemInput} />
           </label>
           <input type="submit" value="Submit" />
         </form>
@@ -170,7 +165,7 @@ class PantryList extends Component {
               <StructuredListCell body>
                 {this.state.listItems.map((row, i) => {
                   return (
-                    <div nCell={`needed-${i}`} onClick={() => this.onRowClick(i, `needed-${i}`)}>
+                    <div nCell={`needed-${i}`} onClick={() => this.toggleNeeded(i, `needed-${i}`)}>
                     {this.renderRow(row.needed ? "Yes" : "No", i)}
                     </div> 
                    )
