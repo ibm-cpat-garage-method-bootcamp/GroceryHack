@@ -16,51 +16,8 @@ class ShoppingList extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      selectedRow: 0,
-      items: [
-        {
-          name: "Eggs",
-          aisle: Math.floor(Math.random() * (12 - 1)) + 1,
-          quantity: "1",
-          needed: true,
-          image: undefined,
-          approved: true,
-          availableInStore: true,
-          purchased: false
-        },
-        {
-          name: "Milk",
-          aisle: Math.floor(Math.random() * (12 - 1)) + 1,
-          quantity: "1",
-          needed: true,
-          image: undefined,
-          approved: true,
-          availableInStore: true,
-          purchased: false
-        },
-        {
-          name: "Zebra Cakes",
-          aisle: Math.floor(Math.random() * (12 - 1)) + 1,
-          quantity: "1",
-          needed: true,
-          image: undefined,
-          approved: true,
-          availableInStore: true,
-          purchased: false
-        },
-        {
-          name: "Honey",
-          aisle: Math.floor(Math.random() * (12 - 1)) + 1,
-          quantity: "1",
-          needed: true,
-          image: undefined,
-          approved: true,
-          availableInStore: true,
-          purchased: false
-        },
-      ],
       value: 'new item',
-      sortedBy: "name"
+      sortedBy: 'name'
     }
   }
 
@@ -69,24 +26,22 @@ class ShoppingList extends Component {
   }
 
   componentDidUpdate = (prevProps, prevState) => {
-    if (prevState.items.length !== this.state.items.length) {
+    if (prevProps.shoppingList.length !== this.props.shoppingList.length) {
       this.sortItems(this.state.sortedBy);
     }
   }
 
-  // TODO: change to purchase click??
-
   onPurchaseClick = id => {
-    const itemsCopy = [...this.state.items];
+    const itemsCopy = [...this.props.shoppingList];
     itemsCopy[id].purchased = !itemsCopy[id].purchased;
-    this.setState({ items: itemsCopy });
+    this.props.updateState({ shoppingList: itemsCopy });
   };
 
   sortItems = key => {
-    this.setState({
-      items: sortArrayofObjectsAsc(this.state.items, key),
-      sortedBy: key
-    })
+    this.props.updateState({
+      shoppingList: sortArrayofObjectsAsc(this.props.shoppingList, key)
+    });
+    this.setState({sortedBy: key});
   }
 
   handleChange = event => {
@@ -105,10 +60,11 @@ class ShoppingList extends Component {
         availableInStore: true,
         purchased: false
       }
-    this.setState({
-      items: [...this.state.items, newItem],
-      value: 'new item'
-    })
+    this.props.updateState({
+      shoppingList: [...this.props.shoppingList, newItem]
+    });
+
+    this.setState({value: 'new item'})
   }
 
   renderRow = (row, col, id) => {
@@ -122,7 +78,7 @@ class ShoppingList extends Component {
             name="row-0"
           />
           <StructuredListCell>
-            <Checkbox checked={this.state.items[id].purchased} />
+            <Checkbox checked={this.props.shoppingList[id].purchased} />
           </StructuredListCell>
         </div>
 
@@ -168,7 +124,7 @@ class ShoppingList extends Component {
               </StructuredListHead>
         
               <StructuredListBody>
-                {this.state.items.map((item, i) => {
+                {this.props.shoppingList.map((item, i) => {
                   const {name, aisle} = item;
                   return this.renderRow(name, aisle, i);
                 })}
