@@ -21,10 +21,13 @@ const log4js = require("log4js");
 const localConfig = require("./config/local.json");
 const path = require("path");
 var cookieParser = require("cookie-parser");
+const cors = require("cors");
+
 
 const logger = log4js.getLogger(appName);
 const app = express();
 
+app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
