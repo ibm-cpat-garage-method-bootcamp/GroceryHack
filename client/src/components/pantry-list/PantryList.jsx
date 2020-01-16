@@ -179,7 +179,7 @@ class PantryList extends Component {
                   return (
                     <div nCell={`needed-${i}`} onClick={() => this.toggleNeeded(i, `needed-${i}`)}>
                       {this.renderRow(this.state.listItems[i].needed ? '\u{2705}' : '\u{274C}')}
-                    </div> 
+                    </div>
                    )
                   })}
               </StructuredListCell>
@@ -203,6 +203,7 @@ class PantryList extends Component {
               </StructuredListCell>
               </StructuredListBody>
             </StructuredListWrapper>
+            <propsOnlyTitle/>
           </div>
         </div>
       </div>
