@@ -8,19 +8,65 @@ class UIShellBody extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      components: {
-        "Pantry List": PantryList,
-        "Shopping List": ShoppingList
-      }
+      shoppingList: [
+        {
+          name: "Eggs",
+          aisle: Math.floor(Math.random() * (12 - 1)) + 1,
+          quantity: "1",
+          needed: true,
+          image: undefined,
+          approved: true,
+          availableInStore: true,
+          purchased: false
+        },
+        {
+          name: "Milk",
+          aisle: Math.floor(Math.random() * (12 - 1)) + 1,
+          quantity: "1",
+          needed: true,
+          image: undefined,
+          approved: true,
+          availableInStore: true,
+          purchased: false
+        },
+        {
+          name: "Zebra Cakes",
+          aisle: Math.floor(Math.random() * (12 - 1)) + 1,
+          quantity: "1",
+          needed: true,
+          image: undefined,
+          approved: true,
+          availableInStore: true,
+          purchased: false
+        },
+        {
+          name: "Honey",
+          aisle: Math.floor(Math.random() * (12 - 1)) + 1,
+          quantity: "1",
+          needed: true,
+          image: undefined,
+          approved: true,
+          availableInStore: true,
+          purchased: false
+        },
+      ],
+      // sortedBy: "name"
     }
+  }
+
+  updateState = (newState) => {
+    this.setState(newState)
   }
 
   render() {
     const { selectedList } = this.props;
-    const ActiveList = this.state.components[selectedList];
     return (
       <div className="pattern-container">
-        <ActiveList showDescription={true} />
+        {
+          selectedList === "Pantry List" ? 
+          <PantryList/> :
+          <ShoppingList updateState={this.updateState} shoppingList={this.state.shoppingList} />
+        }
       </div>
     );
   }
