@@ -49,6 +49,7 @@ class PantryList extends Component {
       value: 'new item',
       showModal: false
     };
+
     this.handleItemInput = this.handleItemInput.bind(this);
     this.handleItemSubmit = this.handleItemSubmit.bind(this);
     this.toggleNeeded = this.toggleNeeded.bind(this);
@@ -92,7 +93,9 @@ class PantryList extends Component {
 
   renderRow = (row, id) => {
     return (
+
       <StructuredListRow key={id} onClick={() => this.toggleNeeded(id)}>
+
         {/* <div>
           <StructuredListInput
             id={`row-${id}`}
@@ -139,6 +142,7 @@ class PantryList extends Component {
         <form onSubmit={this.handleItemSubmit}>
           <label>
           Name:
+
             <input type="text" placeholder={this.state.value} onChange={this.handleItemInput} />
           </label>
           <input type="submit" value="Submit" />
@@ -165,7 +169,9 @@ class PantryList extends Component {
               <StructuredListCell body>
                 {this.state.listItems.map((row, i) => {
                   return (
+
                     <div nCell={`needed-${i}`} onClick={() => this.toggleNeeded(i, `needed-${i}`)}>
+
                     {this.renderRow(row.needed ? "Yes" : "No", i)}
                     </div> 
                    )
