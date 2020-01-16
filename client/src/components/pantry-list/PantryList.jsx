@@ -16,6 +16,7 @@ class PantryList extends Component {
     super(props);
     this.state = {
       selectedRow: 0,
+      userRole: false,
       listItems: [
         {
           "name": "flamin' hot cheetos",
@@ -48,12 +49,10 @@ class PantryList extends Component {
       value: 'new item',
       showModal: false
     };
-    
     this.handleItemInput = this.handleItemInput.bind(this);
     this.handleItemSubmit = this.handleItemSubmit.bind(this);
     this.toggleNeeded = this.toggleNeeded.bind(this);
     this.deleteItem = this.deleteItem.bind(this);
-
   }
 
   toggleNeeded = (id, nCell) => {
@@ -92,12 +91,16 @@ class PantryList extends Component {
     })
   }
 
+  componentDidMount = () => {
+    this.setState({
+      userRole: this.props.userRole
+    })
+  }
+
   renderRow = (row, id) => {
     return (
-
       <StructuredListRow key={id} onClick={() => this.toggleNeeded(id)}>
         <div>
-
           <StructuredListInput
             id={`row-${id}`}
             value="row-0"
@@ -150,7 +153,6 @@ class PantryList extends Component {
         <form onSubmit={this.handleItemSubmit}>
           <label>
           Name:
-
             <input type="text" placeholder={this.state.value} onChange={this.handleItemInput} />
           </label>
           <input type="submit" value="Submit" />
@@ -177,8 +179,7 @@ class PantryList extends Component {
                   return (
                     <div nCell={`needed-${i}`} onClick={() => this.toggleNeeded(i, `needed-${i}`)}>
                       {this.renderRow(this.state.listItems[i].needed ? '\u{2705}' : '\u{274C}')}
-
-                    </div> 
+                    </div>
                    )
                   })}
               </StructuredListCell>
