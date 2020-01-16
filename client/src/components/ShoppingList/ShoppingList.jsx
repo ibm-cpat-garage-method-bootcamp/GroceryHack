@@ -11,37 +11,64 @@ import {
 import Header from "../../pattern-components/Header";
 import "../../pattern-components/patterns.scss"
 import { sortArrayofObjectsAsc } from "../../util/helpers";
+import axios from "axios";
 
 class ShoppingList extends Component {
   constructor(props) {
     super(props);
     this.state = {
+      shoppingList: [],
       value: 'new item',
       sortedBy: 'name'
     }
   }
 
+  getShoppingList = () => {
+    axios.get("http://localhost:3000/api/state")
+    .then(({data}) => {
+      this.setState({shoppingList: data})
+    }).catch(error => {
+      console.error(error)
+    })
+  }
+
+  postShoppingList = (item) => {
+    axios.post("http://localhost:3000/api/state", {item})
+    .then(({data}) => {
+      if (data === true) {
+        this.setState({
+          shoppingList: [...this.state.shoppingList, item]
+        });
+      } else {
+        window.alert("error adding item")
+      }
+    }).catch(error => {
+      console.error(error)
+    })
+  }
+
   componentDidMount = () => {
+    this.getShoppingList();
     this.sortItems("name");
   }
 
   componentDidUpdate = (prevProps, prevState) => {
-    if (prevProps.shoppingList.length !== this.props.shoppingList.length) {
+    if (prevState.shoppingList.length !== this.state.shoppingList.length) {
       this.sortItems(this.state.sortedBy);
     }
   }
 
   onPurchaseClick = id => {
-    const itemsCopy = [...this.props.shoppingList];
+    const itemsCopy = [...this.state.shoppingList];
     itemsCopy[id].purchased = !itemsCopy[id].purchased;
-    this.props.setShellBodyState({ shoppingList: itemsCopy });
+    this.setState({ shoppingList: itemsCopy });
   };
 
   sortItems = key => {
-    this.props.setShellBodyState({
-      shoppingList: sortArrayofObjectsAsc(this.props.shoppingList, key)
+    this.setState({
+      shoppingList: sortArrayofObjectsAsc(this.state.shoppingList, key),
+      sortedBy: key
     });
-    this.setState({sortedBy: key});
   }
 
   handleChange = event => {
@@ -60,9 +87,11 @@ class ShoppingList extends Component {
         availableInStore: true,
         purchased: false
       }
-    this.props.setShellBodyState({
-      shoppingList: [...this.props.shoppingList, newItem]
-    });
+    // TODO: post request
+    this.postShoppingList(newItem);
+    // this.setState({
+    //   shoppingList: [...this.state.shoppingList, newItem]
+    // });
 
     this.setState({value: 'new item'})
   }
@@ -78,7 +107,7 @@ class ShoppingList extends Component {
             name="row-0"
           />
           <StructuredListCell>
-            <Checkbox checked={this.props.shoppingList[id].purchased} />
+            <Checkbox checked={this.state.shoppingList[id].purchased} />
           </StructuredListCell>
         </div>
 
@@ -124,7 +153,7 @@ class ShoppingList extends Component {
               </StructuredListHead>
         
               <StructuredListBody>
-                {this.props.shoppingList.map((item, i) => {
+                {this.state.shoppingList.map((item, i) => {
                   const {name, aisle} = item;
                   return this.renderRow(name, aisle, i);
                 })}
