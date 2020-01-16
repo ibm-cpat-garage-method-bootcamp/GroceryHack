@@ -31,8 +31,6 @@ class ShoppingList extends Component {
     }
   }
 
-  // TODO: change to purchase click??
-
   onPurchaseClick = id => {
     const itemsCopy = [...this.props.shoppingList];
     itemsCopy[id].purchased = !itemsCopy[id].purchased;
@@ -104,7 +102,6 @@ class ShoppingList extends Component {
         <form onSubmit={this.handleSubmit}>
           <label>
           Name:
-          {/* change back to state */}
             <input type="text" placeholder={this.state.value} onChange={this.handleChange} value={this.state.value === "new item" ? "" : this.state.value} />
           </label>
           <input type="submit" value="Submit" />
