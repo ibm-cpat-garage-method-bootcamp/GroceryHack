@@ -5,8 +5,7 @@ import {
   StructuredListCell,
   StructuredListHead,
   StructuredListBody,
-  StructuredListInput,
-  Icon
+  StructuredListInput
 } from "carbon-components-react";
 import { iconCheckmarkSolid } from "carbon-icons";
 import Header from "client/src/pattern-components/Header.jsx";
@@ -19,7 +18,7 @@ class PantryList extends Component {
       selectedRow: 0,
       listItems: [
         {
-          "name": "bananas",
+          "name": "flamin' hot cheetos",
           "aisle": 1,
           "quantity": "1",
           "needed": true,
@@ -28,7 +27,7 @@ class PantryList extends Component {
           "availableInStore": true
         },
         {
-          "name": "oranges",
+          "name": "whiteclaw",
           "aisle": 1,
           "quantity": "1",
           "needed": true,
@@ -37,7 +36,7 @@ class PantryList extends Component {
           "availableInStore": true
         },
         {
-          "name": "kiwis",
+          "name": "gogurt",
           "aisle": 1,
           "quantity": "1",
           "needed": true,
@@ -52,6 +51,7 @@ class PantryList extends Component {
     this.handleItemInput = this.handleItemInput.bind(this);
     this.handleItemSubmit = this.handleItemSubmit.bind(this);
     this.toggleNeeded = this.toggleNeeded.bind(this);
+    this.deleteItem = this.deleteItem.bind(this);
   }
 
   toggleNeeded = (id, nCell) => {
@@ -93,22 +93,20 @@ class PantryList extends Component {
   renderRow = (row, id) => {
     return (
       <StructuredListRow key={id} onClick={() => this.toggleNeeded(id)}>
-        {/* <div>
+        <div>
           <StructuredListInput
             id={`row-${id}`}
             value="row-0"
             title="row-0"
             name="row-0"
-            defaultChecked={this.state.selectedRow === id}
-            checked={this.state.selectedRow === id}
           />
-          <StructuredListCell>
+          {/* <StructuredListCell>
             <Icon
               className="bx--structured-list-svg"
               icon={iconCheckmarkSolid}
             />
-          </StructuredListCell>
-        </div> */}
+          </StructuredListCell> */}
+        </div>
 
         <StructuredListCell className="simple-list-row">
           {row}
@@ -128,6 +126,15 @@ class PantryList extends Component {
     currentList[id].quantity === "0" ? currentList[id].needed = false : currentList[id].needed = true;
 
     this.setState({listItems: currentList});
+  }
+
+  deleteItem = (id) => {
+    let currentList = this.state.listItems;
+    if (window.confirm(`Are you sure you want to delete ${this.state.listItems[id].name} from your pantry?`)) {
+      currentList.splice(id, 1)
+    }
+
+    this.setState({listItems: currentList})
   }
 
   render() {
@@ -152,7 +159,7 @@ class PantryList extends Component {
                     Needed
                   </StructuredListCell>
                   <StructuredListCell head>
-                    Pantry List
+                    Items
                   </StructuredListCell>
                   <StructuredListCell head>
                     Quantity Needed
@@ -166,7 +173,8 @@ class PantryList extends Component {
                 {this.state.listItems.map((row, i) => {
                   return (
                     <div nCell={`needed-${i}`} onClick={() => this.toggleNeeded(i, `needed-${i}`)}>
-                    {this.renderRow(row.needed ? "Yes" : "No", i)}
+                      {this.renderRow(this.state.listItems[i].needed ? '\u{2705}' : '\u{274C}')}
+
                     </div> 
                    )
                   })}
@@ -174,7 +182,7 @@ class PantryList extends Component {
               <StructuredListCell body>
                 {this.state.listItems.map((row, i) => {
                   return (
-                    <div className={`name-${i}`}>
+                    <div className={`name-${i}`} onClick={() => this.deleteItem(i, `quantity-${i}`)}>
                     {this.renderRow(row.name, i)}
                   </div> 
                   )
@@ -191,6 +199,7 @@ class PantryList extends Component {
               </StructuredListCell>
               </StructuredListBody>
             </StructuredListWrapper>
+            <propsOnlyTitle/>
           </div>
         </div>
       </div>
