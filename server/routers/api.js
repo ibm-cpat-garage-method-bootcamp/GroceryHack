@@ -13,6 +13,10 @@ module.exports = function(app){
     stateManager.addItem(req.body.item) ? res.send(true) : res.send(false)
   })
 
+  app.put('/api/state', (req, res) => {
+    res.send(stateManager.putItem(req.body.item))
+  })
+
   app.delete('/api/state', (req, res) => {
     res.send(stateManager.deleteItem(req.body.item))
   })

@@ -57,6 +57,17 @@
         return true
       },
 
+      putItem(updatedItem) {
+        const stateCopy = this.state.shoppingList.map(item => {
+          if (item.name === updatedItem.name) {
+            item = updatedItem
+          }
+          return item;
+        })
+        this.state.shoppingList = stateCopy;
+        return this.state.shoppingList
+      },
+
       deleteItem(deletedItem) {
         const stateCopy = this.state.shoppingList.filter(item => item.name !== deletedItem.name)
         this.state.shoppingList = stateCopy;
