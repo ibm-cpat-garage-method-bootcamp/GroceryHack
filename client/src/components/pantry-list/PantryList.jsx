@@ -166,15 +166,12 @@ class PantryList extends Component {
                   </StructuredListCell>
                 </StructuredListRow>
               </StructuredListHead>
-
-
               <StructuredListBody>
               <StructuredListCell body>
                 {this.state.listItems.map((row, i) => {
                   return (
                     <div nCell={`needed-${i}`} onClick={() => this.toggleNeeded(i, `needed-${i}`)}>
                       {this.renderRow(this.state.listItems[i].needed ? '\u{2705}' : '\u{274C}')}
-
                     </div> 
                    )
                   })}
