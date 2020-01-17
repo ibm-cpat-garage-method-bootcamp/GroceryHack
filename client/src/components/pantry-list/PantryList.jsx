@@ -43,8 +43,8 @@ class PantryList extends Component {
     })
   }
 
-  putListItems = (itemName) => {
-    axios.put("http://localhost:3000/api/state", {item: itemName})
+  putListItems = (item) => {
+    axios.put("http://localhost:3000/api/state", {item})
     .then(({data}) => {
       this.setState({listItems: data})
     }).catch(error => {
