@@ -61,7 +61,6 @@ class UIShellBody extends Component {
   }
 
   handleRoleSelection = (role) => {
-    console.log(role);
     this.setState({
       userRole: role
     })

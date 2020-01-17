@@ -7,9 +7,9 @@ import {
   StructuredListBody,
   StructuredListInput
 } from "carbon-components-react";
-import { iconCheckmarkSolid } from "carbon-icons";
 import Header from "client/src/pattern-components/Header.jsx";
 import "client/src/pattern-components/patterns.scss";
+import axios from "axios";
 
 class PantryList extends Component {
   constructor(props) {
@@ -17,35 +17,7 @@ class PantryList extends Component {
     this.state = {
       selectedRow: 0,
       userRole: false,
-      listItems: [
-        {
-          "name": "flamin' hot cheetos",
-          "aisle": 1,
-          "quantity": "1",
-          "needed": true,
-          "image": "",
-          "approved": true,
-          "availableInStore": true
-        },
-        {
-          "name": "whiteclaw",
-          "aisle": 1,
-          "quantity": "1",
-          "needed": true,
-          "image": "",
-          "approved": true,
-          "availableInStore": true
-        },
-        {
-          "name": "gogurt",
-          "aisle": 1,
-          "quantity": "1",
-          "needed": true,
-          "image": "",
-          "approved": true,
-          "availableInStore": true
-        }
-      ],
+      listItems: [],
       value: 'new item',
       showModal: false
     };
@@ -55,15 +27,65 @@ class PantryList extends Component {
     this.deleteItem = this.deleteItem.bind(this);
   }
 
+  componentDidMount = () => {
+    this.setState({
+      userRole: this.props.userRole
+    })
+    this.getListItems();
+  }
+
+  getListItems = () => {
+    axios.get("http://localhost:3000/api/state")
+    .then(({data}) => {
+      this.setState({listItems: data})
+    }).catch(error => {
+      console.error(error)
+    })
+  }
+
+  putListItems = (item) => {
+    axios.put("http://localhost:3000/api/state", {item})
+    .then(({data}) => {
+      this.setState({listItems: data})
+    }).catch(error => {
+      console.error(error)
+    })
+  }
+
+  deleteListItems = (itemName) => {
+    axios.delete("http://localhost:3000/api/state", {params: {itemName}})
+    .then(({data}) => {
+      this.setState({listItems: data})
+    }).catch(error => {
+      console.error(error)
+    })
+  }
+
+  postListItems = (item) => {
+    axios.post("http://localhost:3000/api/state", {item})
+    .then(({data}) => {
+      if (data === true) {
+        this.setState({
+          listItems: [...this.state.listItems, item]
+        });
+      } else {
+        window.alert("error adding item")
+      }
+    }).catch(error => {
+      console.error(error)
+    })
+  }
+
   toggleNeeded = (id, nCell) => {
     if (nCell) {
       let updatedList = this.state.listItems;
       updatedList[id].needed = !updatedList[id].needed;
-      updatedList[id].needed ? updatedList[id].quantity = "1" : updatedList[id].quantity =  "0"
+      updatedList[id].needed ? updatedList[id].quantity = "1" : updatedList[id].quantity =  "0";
+
+      this.putListItems(updatedList[id])
   
       this.setState({
-        selectedRow: id,
-        listItems : updatedList
+        selectedRow: id
       })
     }
   };
@@ -74,27 +96,17 @@ class PantryList extends Component {
 
   handleItemSubmit = (event) => {
     event.preventDefault();
-    let currentState = this.state.listItems;
-    currentState.push(
-      {
+    const itemToAdd = {
         "name": this.state.value,
-        "aisle": 1,
+        "aisle": Math.floor(Math.random() * (12 - 1)) + 1,
         "quantity": "1",
         "needed": true,
         "image": "",
         "approved": true,
         "availableInStore": true
-      }
-    );
-    this.setState({
-      listItems: currentState
-    })
-  }
+    }
 
-  componentDidMount = () => {
-    this.setState({
-      userRole: this.props.userRole
-    })
+    this.postListItems(itemToAdd)
   }
 
   renderRow = (row, id) => {
@@ -107,12 +119,6 @@ class PantryList extends Component {
             title="row-0"
             name="row-0"
           />
-          {/* <StructuredListCell>
-            <Icon
-              className="bx--structured-list-svg"
-              icon={iconCheckmarkSolid}
-            />
-          </StructuredListCell> */}
         </div>
 
         <StructuredListCell className="simple-list-row">
@@ -128,20 +134,21 @@ class PantryList extends Component {
       quantity = this.state.listItems[id].quantity; 
     } 
 
-    let currentList = this.state.listItems;
+    const currentList = this.state.listItems;
     currentList[id].quantity = quantity;
     currentList[id].quantity === "0" ? currentList[id].needed = false : currentList[id].needed = true;
-
-    this.setState({listItems: currentList});
+    
+    this.putListItems(currentList[id])
+    // this.setState({listItems: currentList});
   }
 
   deleteItem = (id) => {
-    let currentList = this.state.listItems;
-    if (window.confirm(`Are you sure you want to delete ${this.state.listItems[id].name} from your pantry?`)) {
-      currentList.splice(id, 1)
+    const itemName = this.state.listItems[id].name
+    if (window.confirm(`Are you sure you want to delete ${itemName} from your pantry?`)) {
+      this.deleteListItems(itemName)
     }
 
-    this.setState({listItems: currentList})
+    // this.setState({listItems: currentList})
   }
 
   render() {
@@ -174,7 +181,7 @@ class PantryList extends Component {
                 </StructuredListRow>
               </StructuredListHead>
               <StructuredListBody>
-              <StructuredListCell body>
+              <StructuredListCell>
                 {this.state.listItems.map((row, i) => {
                   return (
                     <div nCell={`needed-${i}`} onClick={() => this.toggleNeeded(i, `needed-${i}`)}>
@@ -183,7 +190,7 @@ class PantryList extends Component {
                    )
                   })}
               </StructuredListCell>
-              <StructuredListCell body>
+              <StructuredListCell>
                 {this.state.listItems.map((row, i) => {
                   return (
                     <div className={`name-${i}`} onClick={() => this.deleteItem(i, `quantity-${i}`)}>
@@ -192,7 +199,7 @@ class PantryList extends Component {
                   )
                 })}
               </StructuredListCell>
-              <StructuredListCell body>
+              <StructuredListCell>
                 {this.state.listItems.map((row, i) => {
                   return (
                     <div qCell={`quantity-${i}`} onClick={() => this.updateQuantity(i, `quantity-${i}`)}>
@@ -203,7 +210,6 @@ class PantryList extends Component {
               </StructuredListCell>
               </StructuredListBody>
             </StructuredListWrapper>
-            <propsOnlyTitle/>
           </div>
         </div>
       </div>

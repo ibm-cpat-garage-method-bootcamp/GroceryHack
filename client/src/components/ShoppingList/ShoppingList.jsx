@@ -26,7 +26,18 @@ class ShoppingList extends Component {
   getShoppingList = () => {
     axios.get("http://localhost:3000/api/state")
     .then(({data}) => {
-      this.setState({shoppingList: data})
+      const shoppingList = data.filter((item) => item.needed === true)
+      this.setState({shoppingList: shoppingList})
+    }).catch(error => {
+      console.error(error)
+    })
+  }
+
+  putShoppingList = (item) => {
+    axios.put("http://localhost:3000/api/state", {item})
+    .then(({data}) => {
+      const shoppingList = data.filter((item) => item.needed === true)
+      this.setState({shoppingList: shoppingList})
     }).catch(error => {
       console.error(error)
     })
@@ -60,8 +71,9 @@ class ShoppingList extends Component {
 
   onPurchaseClick = id => {
     const itemsCopy = [...this.state.shoppingList];
-    itemsCopy[id].purchased = !itemsCopy[id].purchased;
-    this.setState({ shoppingList: itemsCopy });
+    const item = itemsCopy[id]
+    item.purchased ? item.purchased = false : item.purchased = true;
+    this.putShoppingList(item)
   };
 
   sortItems = key => {
@@ -80,19 +92,14 @@ class ShoppingList extends Component {
     const newItem = {
         name: this.state.value,
         aisle: Math.floor(Math.random() * (12 - 1)) + 1,
-        quantity: "17",
+        quantity: "1",
         needed: true,
         image: "",
         approved: true,
         availableInStore: true,
         purchased: false
       }
-    // TODO: post request
     this.postShoppingList(newItem);
-    // this.setState({
-    //   shoppingList: [...this.state.shoppingList, newItem]
-    // });
-
     this.setState({value: 'new item'})
   }
 
