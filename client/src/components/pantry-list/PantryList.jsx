@@ -85,8 +85,7 @@ class PantryList extends Component {
       this.putListItems(updatedList[id])
   
       this.setState({
-        selectedRow: id,
-        // listItems : updatedList
+        selectedRow: id
       })
     }
   };
@@ -97,7 +96,6 @@ class PantryList extends Component {
 
   handleItemSubmit = (event) => {
     event.preventDefault();
-    // let currentState = this.state.listItems;
     const itemToAdd = {
         "name": this.state.value,
         "aisle": 1,
@@ -109,9 +107,6 @@ class PantryList extends Component {
       }
 
     this.postListItems(itemToAdd)
-    // this.setState({
-    //   listItems: currentState
-    // })
   }
 
   renderRow = (row, id) => {
@@ -124,12 +119,6 @@ class PantryList extends Component {
             title="row-0"
             name="row-0"
           />
-          {/* <StructuredListCell>
-            <Icon
-              className="bx--structured-list-svg"
-              icon={iconCheckmarkSolid}
-            />
-          </StructuredListCell> */}
         </div>
 
         <StructuredListCell className="simple-list-row">
@@ -220,7 +209,6 @@ class PantryList extends Component {
               </StructuredListCell>
               </StructuredListBody>
             </StructuredListWrapper>
-            {/* <propsOnlyTitle/> */}
           </div>
         </div>
       </div>

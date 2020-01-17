@@ -88,12 +88,7 @@ class ShoppingList extends Component {
         availableInStore: true,
         purchased: false
       }
-    // TODO: post request
     this.postShoppingList(newItem);
-    // this.setState({
-    //   shoppingList: [...this.state.shoppingList, newItem]
-    // });
-
     this.setState({value: 'new item'})
   }
 
