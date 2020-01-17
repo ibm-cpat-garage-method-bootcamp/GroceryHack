@@ -81,7 +81,7 @@ class ShoppingList extends Component {
     const newItem = {
         name: this.state.value,
         aisle: Math.floor(Math.random() * (12 - 1)) + 1,
-        quantity: "17",
+        quantity: "1",
         needed: true,
         image: "",
         approved: true,
