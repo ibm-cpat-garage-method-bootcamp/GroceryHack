@@ -27,16 +27,17 @@ class PantryList extends Component {
     this.deleteItem = this.deleteItem.bind(this);
   }
 
-  componentDidMount() {
-    console.log('mounted')
-    // this.getListItems();
-  }
 
-  componentDidUpdate(prevProps, prevState) {
-    console.log('updated')
-    if (this.state.listItems.length !== prevState.listItems.length) {
-      this.getListItems();
-    }
+  componentDidMount = () => {
+    axios.get("http://localhost:3000/api/state")
+    .then(({data}) => {
+      this.setState({listItems: data})
+    }).catch(error => {
+      console.error(error)
+    })
+    this.setState({
+      userRole: this.props.userRole
+    })
   }
 
   getListItems = () => {
@@ -119,13 +120,7 @@ class PantryList extends Component {
     //   listItems: currentState
     // })
   }
-
-  componentDidMount = () => {
-    this.setState({
-      userRole: this.props.userRole
-    })
-  }
-
+  
   renderRow = (row, id) => {
     return (
       <StructuredListRow key={id} onClick={() => this.toggleNeeded(id)}>
