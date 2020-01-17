@@ -7,9 +7,9 @@ import {
   StructuredListBody,
   StructuredListInput
 } from "carbon-components-react";
-import { iconCheckmarkSolid } from "carbon-icons";
 import Header from "client/src/pattern-components/Header.jsx";
 import "client/src/pattern-components/patterns.scss";
+import axios from "axios";
 
 class PantryList extends Component {
   constructor(props) {
@@ -17,35 +17,7 @@ class PantryList extends Component {
     this.state = {
       selectedRow: 0,
       userRole: false,
-      listItems: [
-        {
-          "name": "flamin' hot cheetos",
-          "aisle": 1,
-          "quantity": "1",
-          "needed": true,
-          "image": "",
-          "approved": true,
-          "availableInStore": true
-        },
-        {
-          "name": "whiteclaw",
-          "aisle": 1,
-          "quantity": "1",
-          "needed": true,
-          "image": "",
-          "approved": true,
-          "availableInStore": true
-        },
-        {
-          "name": "gogurt",
-          "aisle": 1,
-          "quantity": "1",
-          "needed": true,
-          "image": "",
-          "approved": true,
-          "availableInStore": true
-        }
-      ],
+      listItems: [],
       value: 'new item',
       showModal: false
     };
@@ -55,15 +27,72 @@ class PantryList extends Component {
     this.deleteItem = this.deleteItem.bind(this);
   }
 
+  componentDidMount() {
+    console.log('mounted')
+    // this.getListItems();
+  }
+
+  componentDidUpdate(prevProps, prevState) {
+    console.log('updated')
+    if (this.state.listItems.length !== prevState.listItems.length) {
+      this.getListItems();
+    }
+  }
+
+  getListItems = () => {
+    axios.get("http://localhost:3000/api/state")
+    .then(({data}) => {
+      this.setState({listItems: data})
+    }).catch(error => {
+      console.error(error)
+    })
+  }
+
+  putListItems = () => {
+    axios.put("http://localhost:3000/api/state")
+    .then(({data}) => {
+      this.setState({listItems: data})
+    }).catch(error => {
+      console.error(error)
+    })
+  }
+
+  deleteListItems = () => {
+    axios.delete("http://localhost:3000/api/state")
+    .then(({data}) => {
+      this.setState({listItems: data})
+    }).catch(error => {
+      console.error(error)
+    })
+  }
+
+  postListItems = (item) => {
+    axios.post("http://localhost:3000/api/state", {item})
+    .then(({data}) => {
+      console.log(data)
+      if (data === true) {
+        this.setState({
+          listItems: [...this.state.listItems, item]
+        });
+      } else {
+        window.alert("error adding item")
+      }
+    }).catch(error => {
+      console.error(error)
+    })
+  }
+
   toggleNeeded = (id, nCell) => {
     if (nCell) {
       let updatedList = this.state.listItems;
       updatedList[id].needed = !updatedList[id].needed;
       updatedList[id].needed ? updatedList[id].quantity = "1" : updatedList[id].quantity =  "0"
+
+      this.putListItems(updatedList[id].needed)
   
       this.setState({
         selectedRow: id,
-        listItems : updatedList
+        // listItems : updatedList
       })
     }
   };
@@ -75,8 +104,7 @@ class PantryList extends Component {
   handleItemSubmit = (event) => {
     event.preventDefault();
     let currentState = this.state.listItems;
-    currentState.push(
-      {
+    const itemToAdd = {
         "name": this.state.value,
         "aisle": 1,
         "quantity": "1",
@@ -85,10 +113,11 @@ class PantryList extends Component {
         "approved": true,
         "availableInStore": true
       }
-    );
-    this.setState({
-      listItems: currentState
-    })
+
+    this.postListItems(itemToAdd)
+    // this.setState({
+    //   listItems: currentState
+    // })
   }
 
   componentDidMount = () => {

@@ -96,7 +96,6 @@ class UIShellBody extends Component {
 
   render() {
     const { selectedList } = this.props;
-    const ActiveList = this.state.components[selectedList];
     if (!this.state.userRole) {
       return (
         <RoleSelectionView handleRoleSelection={this.handleRoleSelection} />
