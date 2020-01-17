@@ -104,7 +104,7 @@ class PantryList extends Component {
 
   handleItemSubmit = (event) => {
     event.preventDefault();
-    let currentState = this.state.listItems;
+    // let currentState = this.state.listItems;
     const itemToAdd = {
         "name": this.state.value,
         "aisle": 1,
@@ -198,7 +198,7 @@ class PantryList extends Component {
                 </StructuredListRow>
               </StructuredListHead>
               <StructuredListBody>
-              <StructuredListCell body>
+              <StructuredListCell>
                 {this.state.listItems.map((row, i) => {
                   return (
                     <div nCell={`needed-${i}`} onClick={() => this.toggleNeeded(i, `needed-${i}`)}>
@@ -207,7 +207,7 @@ class PantryList extends Component {
                    )
                   })}
               </StructuredListCell>
-              <StructuredListCell body>
+              <StructuredListCell>
                 {this.state.listItems.map((row, i) => {
                   return (
                     <div className={`name-${i}`} onClick={() => this.deleteItem(i, `quantity-${i}`)}>
@@ -216,7 +216,7 @@ class PantryList extends Component {
                   )
                 })}
               </StructuredListCell>
-              <StructuredListCell body>
+              <StructuredListCell>
                 {this.state.listItems.map((row, i) => {
                   return (
                     <div qCell={`quantity-${i}`} onClick={() => this.updateQuantity(i, `quantity-${i}`)}>
