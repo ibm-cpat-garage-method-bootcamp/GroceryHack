@@ -26,7 +26,8 @@ class ShoppingList extends Component {
   getShoppingList = () => {
     axios.get("http://localhost:3000/api/state")
     .then(({data}) => {
-      this.setState({shoppingList: data})
+      const shoppingList = data.filter((item) => item.needed === true)
+      this.setState({shoppingList: shoppingList})
     }).catch(error => {
       console.error(error)
     })
