@@ -52,8 +52,8 @@ class PantryList extends Component {
     })
   }
 
-  deleteListItems = (item) => {
-    axios.delete("http://localhost:3000/api/state", {params: {item}})
+  deleteListItems = (itemName) => {
+    axios.delete("http://localhost:3000/api/state", {params: {itemName}})
     .then(({data}) => {
       this.setState({listItems: data})
     }).catch(error => {
@@ -104,7 +104,7 @@ class PantryList extends Component {
         "image": "",
         "approved": true,
         "availableInStore": true
-      }
+    }
 
     this.postListItems(itemToAdd)
   }
@@ -134,19 +134,18 @@ class PantryList extends Component {
       quantity = this.state.listItems[id].quantity; 
     } 
 
-    let currentList = this.state.listItems;
+    const currentList = this.state.listItems;
     currentList[id].quantity = quantity;
     currentList[id].quantity === "0" ? currentList[id].needed = false : currentList[id].needed = true;
-
-    this.setState({listItems: currentList});
+    
+    this.putListItems(currentList[id])
+    // this.setState({listItems: currentList});
   }
 
   deleteItem = (id) => {
-    // let currentList = this.state.listItems;
-    if (window.confirm(`Are you sure you want to delete ${this.state.listItems[id].name} from your pantry?`)) {
-      // currentList.splice(id, 1)
-      console.log(id);
-      this.deleteListItems(this.state.listItems[id].name)
+    const itemName = this.state.listItems[id].name
+    if (window.confirm(`Are you sure you want to delete ${itemName} from your pantry?`)) {
+      this.deleteListItems(itemName)
     }
 
     // this.setState({listItems: currentList})
