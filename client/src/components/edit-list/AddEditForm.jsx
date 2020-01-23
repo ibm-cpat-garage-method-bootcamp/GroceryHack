@@ -6,8 +6,8 @@ import {
   Button,
   Tile
 } from "carbon-components-react";
-import Header from "client/src/pattern-components/Header.jsx";
-import "client/src/pattern-components/patterns.scss";
+import Header from "../..pattern-components/Header.jsx";
+import "../../pattern-components/patterns.scss";
 
 let checkFlag = true;
 
