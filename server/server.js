@@ -22,6 +22,8 @@ const localConfig = require("./config/local.json");
 const path = require("path");
 var cookieParser = require("cookie-parser");
 const cors = require("cors");
+const { groceryHack } = require('../db/db_server.js');
+const mongoose = require('mongoose');
 
 
 const logger = log4js.getLogger(appName);
@@ -43,6 +45,31 @@ require("./services/index")(app);
 require("./routers/index")(app, server);
 
 // Add your code here
+
+app.post('/itemDescription', (req, res) => {
+  console.log("flare");
+  const item = new groceryHack({
+    _id: new mongoose.Types.ObjectId(),
+    name: req.body.name,
+    aisle: req.body.aisle,
+    quantity: req.body.quantity,
+    needed: req.body.needed,
+    image: req.body.image,
+    approved: req.body.approved,
+    availableInStore: req.body.availableInStore,
+    purchased: req.body.purchased,
+  });
+  item.save()
+    .then(result => {
+      res.status(201).send({
+        message: 'handling POST requests to /itemDescription'
+      });
+    })
+    .catch(err => {
+      console.error(err);
+      res.status(500).send({ error: err });
+    });
+ });
 
 const port = process.env.PORT || localConfig.port;
 server.listen(port, function() {

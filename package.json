@@ -34,6 +34,7 @@
     "client": "file:./client",
     "cookie-parser": "^1.4.3",
     "cors": "^2.8.5",
+    "dotenv": "^8.2.0",
     "express": "^4.15.3",
     "express-http-proxy": "^1.6.0",
     "ibm-cloud-env": "^0",
