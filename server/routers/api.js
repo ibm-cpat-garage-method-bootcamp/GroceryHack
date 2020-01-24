@@ -26,7 +26,7 @@ module.exports = function(app){
   app.put('/api/state', async (req, res) => {
     try {
     // TODO: take id
-    const data = await db.putItem(red.body.id, req.body.item);
+    const data = await db.putItem({_id: req.body.item._id}, req.body.item);
     res.send(data)
     } catch (error) {
       res.status(400).send("couldnt update that item")
@@ -35,8 +35,9 @@ module.exports = function(app){
 
   app.delete('/api/state', async (req, res) => {
     try {
-      const data = await db.deleteItem(req.body.item)
-      res.send(data)
+      const id = {_id : req.query.itemID}
+      const data = await db.deleteItem(id)
+      res.send(await db.getList())
     } catch (error) {
       res.status(400).send("couldnt update that item")
     }
