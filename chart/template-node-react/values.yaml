@@ -8,8 +8,8 @@ replicaCount: 1
 apiHost: ""
 
 image:
-  repository: replace
-  tag: replace
+  repository: seth4ibm/groceryhack
+  tag: v2
   pullPolicy: IfNotPresent
   port: 3000
 
