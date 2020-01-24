@@ -14,48 +14,6 @@ class UIShellBody extends Component {
         "Shopping List": ShoppingList
       },
       userRole: false,
-      shoppingList: [
-        {
-          name: "Eggs",
-          aisle: Math.floor(Math.random() * (12 - 1)) + 1,
-          quantity: "1",
-          needed: true,
-          image: undefined,
-          approved: true,
-          availableInStore: true,
-          purchased: false
-        },
-        {
-          name: "Milk",
-          aisle: Math.floor(Math.random() * (12 - 1)) + 1,
-          quantity: "1",
-          needed: true,
-          image: undefined,
-          approved: true,
-          availableInStore: true,
-          purchased: false
-        },
-        {
-          name: "Zebra Cakes",
-          aisle: Math.floor(Math.random() * (12 - 1)) + 1,
-          quantity: "1",
-          needed: true,
-          image: undefined,
-          approved: true,
-          availableInStore: true,
-          purchased: false
-        },
-        {
-          name: "Honey",
-          aisle: Math.floor(Math.random() * (12 - 1)) + 1,
-          quantity: "1",
-          needed: true,
-          image: undefined,
-          approved: true,
-          availableInStore: true,
-          purchased: false
-        },
-      ],
     }
     this.handleRoleSelection = this.handleRoleSelection.bind(this);
   }
@@ -70,32 +28,8 @@ class UIShellBody extends Component {
     this.setState(newState)
   }
 
-  updateShoppingList = (item) => {
-    // TODO: add item.approved
-    if (item.needed === true) {
-      this.addItemToShoppingList(item)
-    } 
-    // else if (item.needed !== true || item.approved !== true) {
-    //   // TODO: pending list??
-    //   console.log("doesnt meet both criteria")
-    // } 
-    else {
-      this.removeItemFromShoppingList(item)
-    }
-  }
-
-  addItemToShoppingList = (newItem) => {
-    this.setState({shoppingList: [...this.state.shoppingList, newItem]})
-  }
-
-  removeItemFromShoppingList = (newItem) => {
-    const shoppingListCopy = this.state.shoppingList.filter((item) => item.name !== newItem.name)
-    this.setState({shoppingList: shoppingListCopy})
-  }
-
   render() {
     const { selectedList } = this.props;
-    const ActiveList = this.state.components[selectedList];
     if (!this.state.userRole) {
       return (
         <RoleSelectionView handleRoleSelection={this.handleRoleSelection} />

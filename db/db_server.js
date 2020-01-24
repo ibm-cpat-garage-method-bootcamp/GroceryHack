@@ -49,22 +49,24 @@ const addItem = async (item) => {
 
 const putItem = async (id, item) => {
   try {
-  const groceryList = await groceryHack.updateOne(id, item).find();
-  return groceryList;
+    const update = await groceryHack.updateOne(id, item);
+    if (update.nModified === 0) {
+      throw new Error('failure to update item')
+    }
+    return await getList();
   } catch (error) {
     console.error(error);
-    return getList();
+    return await getList();
   }
 }
 
 const deleteItem = async (id) => {
   try {
-    const groceryList = await groceryHack.deleteOne(id).find();
-    return groceryList;
+    await groceryHack.deleteOne(id);
   } catch (error) {
     console.error(error);
-    return getList();
   }
+  return await getList()
 }
 
 const dropCollection = function(callback) {
