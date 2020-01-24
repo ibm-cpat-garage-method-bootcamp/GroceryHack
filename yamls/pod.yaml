@@ -8,7 +8,7 @@ metadata:
 spec:
   containers:
     - name: grocery-hack-app
-      image: seth4ibm/groceryhack:v1
+      image: seth4ibm/groceryhack:v2
       ports:
       - containerPort: 3000
         name: http
